@@ -1,0 +1,62 @@
+import java.util.Scanner;
+
+class ATM {
+    private double balance;
+    private String pin;
+
+    // Constructor
+    public ATM(double balance, String pin) {
+        this.balance = balance;
+        this.pin = pin;
+    }
+
+    // Authenticate user
+    public boolean authenticate(String enteredPin) {
+        if (enteredPin.equals(pin)) {
+            System.out.println("Authentication successful.");
+            return true;
+        } else {
+            System.out.println("Invalid PIN. Transaction cancelled.");
+            return false;
+        }
+    }
+
+    // Withdraw cash
+    public void withdraw(double amount) {
+        if (amount <= balance) {
+            balance -= amount;
+            System.out.println("Dispensing RM" + amount);
+            printReceipt(amount);
+        } else {
+            System.out.println("Insufficient balance. Transaction cancelled.");
+        }
+    }
+
+    // Print receipt
+    private void printReceipt(double amount) {
+        System.out.println("Receipt:");
+        System.out.println("Withdrawn: RM" + amount);
+        System.out.println("Remaining Balance: RM" + balance);
+        System.out.println("Thank you for using the ATM!");
+    }
+}
+
+public class ATMMain {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ATM atm = new ATM(500.0, "1234"); // starting balance and PIN
+
+        System.out.println("Welcome to the ATM!");
+        System.out.print("Enter your PIN: ");
+        String enteredPin = scanner.nextLine();
+
+        if (atm.authenticate(enteredPin)) {
+            System.out.print("Enter amount to withdraw: RM");
+            double amount = scanner.nextDouble();
+            atm.withdraw(amount);
+            System.out.println("Card ejected. Goodbye!");
+        }
+
+        scanner.close();
+    }
+}
